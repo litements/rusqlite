@@ -25,6 +25,24 @@ pub fn SQLITE_TRANSIENT() -> sqlite3_destructor_type {
     Some(unsafe { mem::transmute(-1_isize) })
 }
 
+#[cfg(feature = "loadable_extension")]
+mod loadable_extension;
+
+#[cfg(feature = "loadable_extension")]
+pub use loadable_extension::loadable_extension_sqlite3_api;
+
+#[cfg(all(
+    feature = "loadable_extension",
+    feature = "loadable_extension_embedded"
+))]
+pub use loadable_extension::loadable_extension_embedded_init;
+
+#[cfg(all(
+    feature = "loadable_extension",
+    not(feature = "loadable_extension_embedded")
+))]
+pub use loadable_extension::loadable_extension_init;
+
 #[allow(clippy::all)]
 mod bindings {
     include!(concat!(env!("OUT_DIR"), "/bindgen.rs"));
