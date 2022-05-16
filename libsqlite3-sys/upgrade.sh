@@ -1,8 +1,7 @@
-#!/bin/bash -e
+#!/bin/sh -e
 
-SCRIPT_DIR=$(cd "$(dirname "$_")" && pwd)
 TARGET_DIR="$SCRIPT_DIR/../target" # ensure target dir is deterministic
-CUR_DIR=$(pwd -P)
+SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 echo "$SCRIPT_DIR"
 cd "$SCRIPT_DIR" || { echo "fatal error" >&2; exit 1; }
 cargo clean
@@ -11,8 +10,8 @@ export SQLITE3_LIB_DIR="$SCRIPT_DIR/sqlite3"
 export SQLITE3_INCLUDE_DIR="$SQLITE3_LIB_DIR"
 
 # Download and extract amalgamation
-SQLITE=sqlite-amalgamation-3370000
-curl -sSf -O https://sqlite.org/2021/$SQLITE.zip
+SQLITE=sqlite-amalgamation-3380300
+curl -O https://sqlite.org/2022/$SQLITE.zip
 unzip -p "$SQLITE.zip" "$SQLITE/sqlite3.c" > "$SQLITE3_LIB_DIR/sqlite3.c"
 unzip -p "$SQLITE.zip" "$SQLITE/sqlite3.h" > "$SQLITE3_LIB_DIR/sqlite3.h"
 unzip -p "$SQLITE.zip" "$SQLITE/sqlite3ext.h" > "$SQLITE3_LIB_DIR/sqlite3ext.h"
